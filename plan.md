@@ -1,29 +1,29 @@
-# work list
+# work list 🚧
 
-## create a git repo
+## create a git repo ✅
 
-- create a github repo
+- create a github repo ✅
 
-## create the web app
+## create the web app 🚧
 
-- learn JSF,PrimeFaces
-- codding
-- add tests
-- add wiki/docs
+- learn JSF,PrimeFaces 🚧
+- codding 🚧
+- add tests ❌
+- add wiki/docs ❌
 
-## create a docker container and server to run the container
+## create a docker container and server to run the container ❌
 
-- create Dockerfile
-    - build image
-    - run image
-- create docker-compose.yml
+- create Dockerfile ❌
+    - build image ❌
+    - run image ❌
+- create docker-compose.yml ❌
 
-## CI/CD
+## CI/CD ❌
 
-### create a build pipeline
+### create a build pipeline ❌
 
-- github action
+- github action ❌
 
-### create a deploy pile line
+### create a deploy pile line ❌
 
-- github action
+- github action ❌
