@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="support_tracker_pu" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <non-jta-data-source>mysql</non-jta-data-source>
+    <class>nz.me.mavenproject6.model.ServiceRequest</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://s2.home:3306/user?allowPublicKeyRetrieval=true"/>
+      <property name="javax.persistence.jdbc.user" value="user"/>
+      <property name="javax.persistence.jdbc.usessl" value="false"/>
+      <property name="javax.persistence.jdbc.password" value="user1"/>
+      <property name="javax.persistence.jdbc.databasename" value="user"/>
+    </properties>
+  </persistence-unit>
+</persistence>

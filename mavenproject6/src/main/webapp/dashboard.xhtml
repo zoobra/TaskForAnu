@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Service Tracker Dashboard</title>
+</h:head>
+<h:body>
+    <h:form id="form">
+        <p:growl id="growl" showDetail="true"/>
+        
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:button value="Logout" outcome="login" />
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Add Request" icon="pi pi-plus"
+                                 oncomplete="PF('addDialog').show()" 
+                                 update=":form:addPanel"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        
+        <p:dataTable id="requestsTable" value="#{serviceRequestBean.requests}" var="req"
+                     paginator="true" rows="10" selectionMode="single"
+                     selection="#{serviceRequestBean.selectedRequest}" rowKey="#{req.id}"
+                     selectionRowMode="add">
+            <p:column headerText="Title" sortBy="#{req.title}">
+                <h:outputText value="#{req.title}"/>
+            </p:column>
+            <p:column headerText="Priority" sortBy="#{req.priority}">
+                <p:tag value="#{req.priority}" 
+                      severity="#{req.priority == 'High' ? 'danger' : 
+                                  req.priority == 'Medium' ? 'warning' : 'info'}"/>
+            </p:column>
+            <p:column headerText="Status" sortBy="#{req.status}">
+                <h:outputText value="#{req.status}"/>
+            </p:column>
+            <p:column headerText="Date Submitted" sortBy="#{req.dateSubmitted}">
+                <h:outputText value="#{req.dateSubmitted}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Actions">
+                <p:commandButton icon="pi pi-pencil" title="Edit"
+                                 oncomplete="PF('editDialog').show()" update=":form:editPanel">
+                    <f:setPropertyActionListener target="#{serviceRequestBean.selectedRequest}" 
+                                               value="#{req}" />
+                </p:commandButton>
+                <p:commandButton icon="pi pi-trash" title="Delete" 
+                                 update=":form:requestsTable, :form:growl"
+                                 action="#{serviceRequestBean.deleteRequest}">
+                    <f:setPropertyActionListener target="#{serviceRequestBean.selectedRequest}" 
+                                               value="#{req}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+        
+        <!-- Add Request Dialog -->
+        <p:dialog header="Add New Request" widgetVar="addDialog" modal="true" resizable="false">
+            <p:outputPanel id="addPanel">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="title" value="Title:" />
+                    <p:inputText id="title" value="#{serviceRequestBean.newRequest.title}" required="true"/>
+                    
+                    <p:outputLabel for="description" value="Description:" />
+                    <p:inputTextarea id="description" value="#{serviceRequestBean.newRequest.description}" rows="5"/>
+                    
+                    <p:outputLabel for="priority" value="Priority:" />
+                    <p:selectOneMenu id="priority" value="#{serviceRequestBean.newRequest.priority}">
+                        <f:selectItem itemLabel="High" itemValue="High"/>
+                        <f:selectItem itemLabel="Medium" itemValue="Medium"/>
+                        <f:selectItem itemLabel="Low" itemValue="Low"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="status" value="Status:" />
+                    <p:selectOneMenu id="status" value="#{serviceRequestBean.newRequest.status}">
+                        <f:selectItem itemLabel="New" itemValue="New"/>
+                        <f:selectItem itemLabel="In Progress" itemValue="In Progress"/>
+                        <f:selectItem itemLabel="Resolved" itemValue="Resolved"/>
+                        <f:selectItem itemLabel="Closed" itemValue="Closed"/>
+                    </p:selectOneMenu>                    
+                    
+                    <p:outputLabel for="date" value="Date:" />
+                    <p:calendar id="date" value="#{serviceRequestBean.newRequest.dateSubmitted}" 
+                               pattern="yyyy-MM-dd"/>
+                    
+                    <p:commandButton value="Save" action="#{serviceRequestBean.addRequest}" 
+                                     oncomplete="if(!args.validationFailed) PF('addDialog').hide();"
+                                     update=":form:requestsTable, :form:growl"/>
+                </h:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+        
+        <!-- Edit Request Dialog -->
+        <p:dialog header="Edit Request" widgetVar="editDialog" modal="true" resizable="false">
+            <p:outputPanel id="editPanel">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="editTitle" value="Title:" />
+                    <p:inputText id="editTitle" value="#{serviceRequestBean.selectedRequest.title}" required="true"/>
+                    
+                    <p:outputLabel for="editDescription" value="Description:" />
+                    <p:inputTextarea id="editDescription" value="#{serviceRequestBean.selectedRequest.description}" rows="5"/>
+                    
+                    <p:outputLabel for="editPriority" value="Priority:" />
+                    <p:selectOneMenu id="editPriority" value="#{serviceRequestBean.selectedRequest.priority}">
+                        <f:selectItem itemLabel="High" itemValue="High"/>
+                        <f:selectItem itemLabel="Medium" itemValue="Medium"/>
+                        <f:selectItem itemLabel="Low" itemValue="Low"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="editStatus" value="Status:" />
+                    <p:selectOneMenu id="editStatus" value="#{serviceRequestBean.selectedRequest.status}">
+                        <f:selectItem itemLabel="New" itemValue="New"/>
+                        <f:selectItem itemLabel="In Progress" itemValue="In Progress"/>
+                        <f:selectItem itemLabel="Resolved" itemValue="Resolved"/>
+                        <f:selectItem itemLabel="Closed" itemValue="Closed"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="editDate" value="Date:" />
+                    <p:calendar id="editDate" value="#{serviceRequestBean.selectedRequest.dateSubmitted}" 
+                               pattern="yyyy-MM-dd"/>
+                    
+                    <p:commandButton value="Update" action="#{serviceRequestBean.updateRequest}" 
+                                     oncomplete="if(!args.validationFailed) PF('editDialog').hide();"
+                                     update=":form:requestsTable, :form:growl"/>
+                </h:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>

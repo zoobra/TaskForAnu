@@ -15,3 +15,9 @@ Design and code DAO class
 08/08
 Explored JavaX Persistence, new plan for DAO
 Fighting with deploing on Payara web server
+
+09/08
+Nothing
+
+10/08
+Make a prototype
